@@ -1,64 +1,52 @@
-import java.sql.*;
-import java.util.Scanner;
-import java.io.*;
+public class App {
 
-public class App{
-
-    // Hardcoded credentials (Security Hotspot)
-    private static final String DB_PASSWORD = "admin123";
-
+    /**
+     * Entry point of the application
+     * @param args command-line arguments
+     */
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        App app = new App();
+        app.run();
+    }
 
-        System.out.println("Enter username:");
-        System.out.println("Enter username:");
-        System.out.println("Enter username:");
+    /**
+     * Main execution method
+     */
+    public void run() {
+        int number = 5;
 
-        String userInput = scanner.nextLine();
-
-        // SQL Injection vulnerability
-        String query = "SELECT * FROM users WHERE username = '" + userInput + "'";
-
-        try {
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/testdb", "root", DB_PASSWORD);
-
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-                System.out.println("User found: " + rs.getString("username"));
-            }
-
-        } catch (Exception e) {
-            // Sensitive info exposure
-            e.printStackTrace();
+        if (isPositive(number)) {
+            int result = calculateSquare(number);
+            printResult(number, result);
+        } else {
+            System.out.println("Number must be positive.");
         }
+    }
 
- try {
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/testdb", "root", DB_PASSWORD);
+    /**
+     * Checks if a number is positive
+     * @param number input number
+     * @return true if positive
+     */
+    public boolean isPositive(int number) {
+        return number > 0;
+    }
 
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+    /**
+     * Calculates square of a number
+     * @param number input number
+     * @return square value
+     */
+    public int calculateSquare(int number) {
+        return number * number;
+    }
 
-            while (rs.next()) {
-                System.out.println("User found: " + rs.getString("username"));
-            }
-
-        } catch (Exception e) {
-            // Sensitive info exposure
-            e.printStackTrace();
-        }
-
-
-        // Command Injection vulnerability
-        try {
-            Runtime.getRuntime().exec("cmd.exe /c dir " + userInput);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Resource leak (scanner not closed)
+    /**
+     * Prints the result
+     * @param number input number
+     * @param result calculated result
+     */
+    public void printResult(int number, int result) {
+        System.out.println("Square of " + number + " is: " + result);
     }
 }
